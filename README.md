@@ -2,7 +2,7 @@
 
 Predict median owner-occupied home values from locality features, and identify which features move price. The work is a supervised linear-regression analysis of the classic Boston housing data (1970 Boston SMSA): 506 tracts, 13 columns, no missing values, and no duplicate rows.
 
-The full analysis, plots, and model diagnostics are in [`Learners_Notebook_Boston_house_price_Full Code.ipynb`](Learners_Notebook_Boston_house_price_Full%20Code.ipynb). A rendered copy is in [`Learners_Notebook_Boston_house_price_Full Code.html`](Learners_Notebook_Boston_house_price_Full%20Code.html).
+The full analysis, plots, and model diagnostics are in [`Learners_Notebook_Boston_house_price_Full Code.ipynb`](Learners_Notebook_Boston_house_price_Full%20Code.ipynb). A rendered copy is at [justinrosander.github.io/Machine-Learning-Boston-Housing-Prediction](https://justinrosander.github.io/Machine-Learning-Boston-Housing-Prediction).
 
 ## Outline
 
