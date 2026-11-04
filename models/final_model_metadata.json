@@ -1,0 +1,59 @@
+{
+  "target_col": "LOG_MEDV",
+  "selected_features": [
+    "CRIM",
+    "NOX",
+    "RM",
+    "DIS",
+    "PTRATIO",
+    "LSTAT",
+    "MEDV_CAP50",
+    "HIGH_CRIME",
+    "TAX_RAD_RATIO"
+  ],
+  "n_selected_features": 9,
+  "train_shape": [
+    404,
+    9
+  ],
+  "test_shape": [
+    102,
+    9
+  ],
+  "final_metrics": {
+    "R2": {
+      "Train": 0.8011686673458277,
+      "Test": 0.7898030829879269
+    },
+    "Adjusted_R2": {
+      "Train": 0.7966268348740319,
+      "Test": 0.769240341106311
+    },
+    "RMSE": {
+      "Train": 0.17364528309625762,
+      "Test": 0.17074481701549146
+    },
+    "MAE": {
+      "Train": 0.13039454517387414,
+      "Test": 0.11830654466995974
+    },
+    "MAPE_%": {
+      "Train": 4.415132878471154,
+      "Test": 4.062938414078166
+    }
+  },
+  "final_cv_summary": {
+    "Metric": [
+      "R2",
+      "RMSE"
+    ],
+    "CV_Mean": [
+      0.7780740887888401,
+      0.18144734955733316
+    ],
+    "CV_Std": [
+      0.04814853100768202,
+      0.014847715131348917
+    ]
+  }
+}

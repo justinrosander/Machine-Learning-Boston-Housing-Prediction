@@ -1,0 +1,166 @@
+﻿Problem Definition Document: Boston Housing Price Prediction (EDA)
+Date: October 2, 2026
+Dataset: Boston.csv (506 rows, 13 variables including target MEDV)
+
+Business Context
+The objective is to predict housing prices (MEDV) from locality-level features and identify the most influential drivers of price. This supports a supervised regression problem where interpretability and predictive accuracy are both important.
+
+Analytical Objective
+- Understand the target variable (MEDV) distribution.
+- Identify meaningful feature relationships using correlation analysis.
+- Confirm whether dependent-independent variable relationships exist.
+- Summarize univariate behavior of all variables.
+- Highlight bivariate relationships for strongly correlated pairs (|r| >= 0.7).
+
+------------------------------------------------------------------
+1) What does the distribution of MEDV look like?
+------------------------------------------------------------------
+Summary statistics for MEDV:
+- Count: 506
+- Mean: 22.533
+- Median: 21.200
+- Standard Deviation: 9.197
+- Min: 5.000
+- Q1: 17.025
+- Q3: 25.000
+- Max: 50.000
+- Skewness: +1.108
+
+Inference:
+- MEDV is positively skewed (right-skewed), so higher-price observations create a longer right tail.
+- Mean is greater than median, consistent with right skew.
+- There is likely a ceiling effect near 50 (known cap in this dataset), which can compress the upper tail.
+- Most values lie in a moderate range (roughly between 17 and 25 around IQR), with fewer high-value neighborhoods.
+
+------------------------------------------------------------------
+2) What can we infer from the correlation heatmap?
+------------------------------------------------------------------
+Top correlations with MEDV:
+- LSTAT vs MEDV: -0.738 (strong negative)
+- RM vs MEDV: +0.695 (strong positive, just below 0.7)
+- PTRATIO vs MEDV: -0.508 (moderate negative)
+- INDUS vs MEDV: -0.484 (moderate negative)
+- TAX vs MEDV: -0.469 (moderate negative)
+
+Strong feature-feature correlations (|r| >= 0.7):
+- RAD vs TAX: +0.910
+- NOX vs DIS: -0.769
+- INDUS vs NOX: +0.764
+- AGE vs DIS: -0.748
+- NOX vs AGE: +0.731
+- INDUS vs TAX: +0.721
+- INDUS vs DIS: -0.708
+
+Heatmap-level inference:
+- Housing price is strongly associated with socioeconomic status proxy (LSTAT) and average rooms (RM).
+- Multiple predictors are highly inter-correlated (especially RAD-TAX), indicating potential multicollinearity risk in linear regression.
+- Environmental/urbanization indicators (INDUS, NOX, TAX, DIS, AGE) form a correlated block, which can dilute individual coefficient interpretability.
+
+------------------------------------------------------------------
+3) Is there correlation between dependent and independent variables?
+------------------------------------------------------------------
+Yes, there is clear correlation between MEDV (dependent variable) and several predictors.
+
+Most relevant relationships:
+- Strong: LSTAT (-0.738), RM (+0.695 borderline-strong)
+- Moderate: PTRATIO (-0.508), INDUS (-0.484), TAX (-0.469), NOX (-0.427)
+- Weak-to-moderate: CRIM (-0.388), RAD (-0.382), AGE (-0.377), ZN (+0.360)
+- Weak: DIS (+0.250), CHAS (+0.175)
+
+Inference:
+- The dependent variable is not random with respect to features; meaningful linear signal exists.
+- LSTAT and RM are the primary candidates for strong predictive contribution.
+
+------------------------------------------------------------------
+4) Univariate analysis inferences for different variables
+------------------------------------------------------------------
+CRIM:
+- Highly right-skewed (skew 5.223), median (0.257) much lower than mean (3.614).
+- Contains extreme high outliers (max 88.976).
+
+ZN:
+- Strong right skew (2.226) with 73.52% zeros.
+- Many towns have no large-lot zoning; non-zero values are sparse but high.
+
+INDUS:
+- Near-symmetric to mildly right-skewed (0.295).
+- Broad spread from 0.46 to 27.74.
+
+CHAS:
+- Binary, heavily imbalanced (93.08% zeros), skew 3.406.
+- River-adjacent tracts are a small minority.
+
+NOX:
+- Mild right skew (0.729), moderate spread.
+- Pollution levels vary but cluster around the center.
+
+RM:
+- Mild right skew (0.404), relatively tight spread (std 0.703).
+- Room count is stable compared with many other variables.
+
+AGE:
+- Mild left skew (-0.599), high median (77.5).
+- Many observations represent older housing stock.
+
+DIS:
+- Right-skewed (1.012); some locations are much farther from employment centers.
+
+RAD:
+- Right-skewed (1.005); discrete index with concentration at lower values and high-value tail.
+
+TAX:
+- Moderately right-skewed (0.670), wide range (187 to 711).
+
+PTRATIO:
+- Mild left skew (-0.802), relatively concentrated distribution.
+
+LSTAT:
+- Right-skewed (0.906) with broad spread; key socioeconomic differentiator.
+
+MEDV:
+- Right-skewed (+1.108), capped upper end at 50.
+
+------------------------------------------------------------------
+5) Bivariate analysis for significant correlations (|r| >= 0.7)
+------------------------------------------------------------------
+Significant pairs and visual inference (from correlation strength/direction):
+
+1. RAD vs TAX (r = +0.910)
+- Expected scatter pattern: strong upward linear trend.
+- Interpretation: better highway accessibility is strongly associated with higher property-tax rates.
+
+2. NOX vs DIS (r = -0.769)
+- Expected scatter: clear downward trend.
+- Interpretation: areas farther from employment centers tend to have lower NOX concentrations.
+
+3. INDUS vs NOX (r = +0.764)
+- Expected scatter: strong positive slope.
+- Interpretation: higher industrial land proportion aligns with higher pollution.
+
+4. AGE vs DIS (r = -0.748)
+- Expected scatter: downward trend.
+- Interpretation: older housing areas tend to be closer to employment centers.
+
+5. LSTAT vs MEDV (r = -0.738)
+- Expected scatter: strong downward trend.
+- Interpretation: higher lower-status population percentage is associated with lower home values.
+
+6. NOX vs AGE (r = +0.731)
+- Expected scatter: upward trend.
+- Interpretation: older neighborhoods are associated with higher NOX levels.
+
+7. INDUS vs TAX (r = +0.721)
+- Expected scatter: upward trend.
+- Interpretation: more industrial areas are associated with higher tax rates.
+
+8. INDUS vs DIS (r = -0.708)
+- Expected scatter: downward trend.
+- Interpretation: more industrial areas are generally closer to employment centers.
+
+Modeling implications from bivariate findings:
+- Multicollinearity is likely (especially among RAD, TAX, INDUS, NOX, DIS, AGE).
+- For linear regression, check VIF and consider feature selection or regularization.
+- LSTAT and RM remain high-priority predictors for MEDV.
+
+Conclusion
+The EDA confirms meaningful signal for predicting MEDV using locality features. The strongest direct relationship with MEDV is negative for LSTAT and positive for RM. Strong inter-feature dependencies suggest multicollinearity handling is essential before final linear regression modeling.

@@ -1,0 +1,144 @@
+﻿Data Dictionary and Hypothesis Sufficiency Assessment
+Project: Boston Housing Price Prediction
+Date: October 2, 2026
+Source Reviewed: data/raw/Boston.csv
+
+Dataset Inventory (data/raw)
+- Files found: 1 tabular dataset (+ .gitkeep)
+- Dataset used: Boston.csv
+- Shape: 506 rows x 13 columns
+- Missing values: None detected across all columns
+- Duplicate rows: 0 exact duplicates detected
+
+============================================================
+DATA DICTIONARY
+============================================================
+
+1) CRIM
+- Type: Numeric (continuous)
+- Meaning: Per capita crime rate by town.
+- Range observed: 0.006 to 88.976
+- Notes: Strong right skew and outliers; likely needs scaling/log transform consideration.
+
+2) ZN
+- Type: Numeric (continuous with many zeros)
+- Meaning: Proportion of residential land zoned for lots over 25,000 sq.ft.
+- Range observed: 0 to 100
+- Notes: High zero concentration; distribution is sparse and right-skewed.
+
+3) INDUS
+- Type: Numeric (continuous)
+- Meaning: Proportion of non-retail business acres per town.
+- Range observed: 0.46 to 27.74
+- Notes: Useful as urban/industrial intensity indicator.
+
+4) CHAS
+- Type: Binary numeric (0/1)
+- Meaning: Charles River dummy variable (1 if tract bounds river, else 0).
+- Range observed: 0 to 1
+- Notes: Strong class imbalance toward 0.
+
+5) NOX
+- Type: Numeric (continuous)
+- Meaning: Nitric oxides concentration (parts per 10 million).
+- Range observed: 0.385 to 0.871
+- Notes: Environmental quality proxy.
+
+6) RM
+- Type: Numeric (continuous)
+- Meaning: Average number of rooms per dwelling.
+- Range observed: 3.561 to 8.780
+- Notes: Commonly one of the strongest positive predictors of house value.
+
+7) AGE
+- Type: Numeric (continuous)
+- Meaning: Proportion of owner-occupied units built prior to 1940.
+- Range observed: 2.9 to 100
+- Notes: Acts as housing stock age proxy.
+
+8) DIS
+- Type: Numeric (continuous)
+- Meaning: Weighted distances to five Boston employment centers.
+- Range observed: 1.130 to 12.126
+- Notes: Accessibility/location proxy.
+
+9) RAD
+- Type: Numeric (discrete index)
+- Meaning: Index of accessibility to radial highways.
+- Range observed: 1 to 24
+- Notes: Strongly correlated with TAX; monitor multicollinearity.
+
+10) TAX
+- Type: Numeric (continuous)
+- Meaning: Full-value property-tax rate per $10,000.
+- Range observed: 187 to 711
+- Notes: Fiscal/regulatory environment proxy.
+
+11) PTRATIO
+- Type: Numeric (continuous)
+- Meaning: Pupil-teacher ratio by town.
+- Range observed: 12.6 to 22.0
+- Notes: Education/public-service quality proxy.
+
+12) LSTAT
+- Type: Numeric (continuous)
+- Meaning: Percentage of lower-status population.
+- Range observed: 1.73 to 37.97
+- Notes: Strong negative association with MEDV in this dataset.
+
+13) MEDV (Target)
+- Type: Numeric (continuous)
+- Meaning: Median value of owner-occupied homes (in $1000s).
+- Range observed: 5 to 50
+- Notes: Upper cap at 50 indicates potential target censoring/ceiling effect.
+
+============================================================
+ARE THE AVAILABLE DATASETS SUFFICIENT TO TEST THE HYPOTHESES?
+============================================================
+
+Hypotheses to evaluate (from problem definition)
+A) Understand MEDV distribution
+B) Infer relationships from correlation heatmap
+C) Validate dependent-independent correlations
+D) Draw univariate inferences for variables
+E) Perform bivariate analysis for strong correlations (|r| >= 0.7)
+
+Sufficiency verdict
+- For A-E (EDA hypotheses): SUFFICIENT.
+  Reason: The single Boston.csv dataset includes the target (MEDV) and all required predictors to compute distributional, univariate, correlation, and bivariate analyses.
+
+- For robust model generalization claims on truly unseen, modern housing markets: PARTIALLY SUFFICIENT.
+  Reason: A single historical dataset can support a baseline linear regression workflow, but it is limited for external validity and production-grade inference.
+
+============================================================
+GAPS IDENTIFIED
+============================================================
+
+1) External validation gap
+- No second independent dataset is present for out-of-sample geographic/temporal validation.
+- Impact: Hard to confirm generalization beyond this sample.
+
+2) Temporal/context gap
+- No time variable or updated market-era data provided.
+- Impact: Cannot test market drift or time-sensitive pricing effects.
+
+3) Potential target censoring
+- MEDV max is 50, suggesting ceiling/censoring in this classic dataset.
+- Impact: Underestimation risk at high-price end and biased linear fit near the cap.
+
+4) Feature coverage gap for modern pricing drivers
+- No explicit variables for school ratings, crime trends over time, transit quality metrics, renovation status, lot size details, or mortgage/economic indicators.
+- Impact: Limits explanatory completeness for current real-estate pricing contexts.
+
+5) Dataset volume/diversity gap
+- Only 506 records from one benchmark dataset.
+- Impact: Limited sample diversity for robust model stability checks.
+
+============================================================
+RECOMMENDED NEXT STEPS
+============================================================
+
+- Keep Boston.csv for EDA and baseline linear regression.
+- Add a holdout external dataset (same schema) for stronger unseen-data testing.
+- Consider regularization and multicollinearity checks (e.g., VIF) before final model interpretation.
+- If available, augment with time-aware and richer locality features to improve practical predictive validity.

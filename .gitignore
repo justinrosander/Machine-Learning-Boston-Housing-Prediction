@@ -1,0 +1,15 @@
+﻿__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+
+# Local environments
+.venv/
+venv/
+env/
+
+# Notebook outputs
+reports/figures/*.png
+reports/figures/*.jpg
+reports/figures/*.jpeg

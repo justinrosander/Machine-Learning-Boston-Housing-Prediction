@@ -1,0 +1,11 @@
+[
+  "CRIM",
+  "NOX",
+  "RM",
+  "DIS",
+  "PTRATIO",
+  "LSTAT",
+  "MEDV_CAP50",
+  "HIGH_CRIME",
+  "TAX_RAD_RATIO"
+]
